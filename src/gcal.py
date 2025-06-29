@@ -8,8 +8,8 @@ from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 
 SCOPES = ['https://www.googleapis.com/auth/calendar.events']
-CREDENTIALS_FILE = './config/credentials.json'
-TOKEN_FILE = './config/token.pickle'
+CREDENTIALS_FILE = '../config/credentials.json'
+TOKEN_FILE = '../config/token.pickle'
 
 
 def authenticate_google_calendar():

@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
-from gcal import *
-from weather import *
+from gcal import create_calendar_event
+from weather import get_tide_forecast, determine_low_tide
 import config
 import time
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 def invite_time(day: int, hour: int, min: int) -> bool:
     now = datetime.now()
