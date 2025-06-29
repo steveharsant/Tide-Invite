@@ -1,0 +1,7 @@
+**/__pycache__
+**/.env
+**/config.py
+**/credentials.json
+**/token.pickle
+**/build.sh
+**/Dockerfile
