@@ -1,6 +1,6 @@
 **/__pycache__
 **/.env
-**/config.py
+**/venv
 **/credentials.json
 **/token.pickle
 **/build.sh

@@ -52,7 +52,7 @@ def create_calendar_event(low_tide_time, event_start, event_end, tide_height):
     tz = pytz.timezone('Australia/Sydney')
 
     event = {
-        'summary': f"Low Tide Window (Tide Height: {tide_height} @ {low_tide_time.strftime('%H:%M')})",
+        'summary': f"Low Tide Window (Tide Height: {tide_height}m @ {low_tide_time.strftime('%H:%M')})",
         'description': f"Lowest tide around {low_tide_time.strftime('%H:%M')}",
         'start': {
             'dateTime': tz.localize(event_start).isoformat(),
@@ -67,6 +67,8 @@ def create_calendar_event(low_tide_time, event_start, event_end, tide_height):
     attendees = [{'email': email.strip()} for email in config.attendees if email.strip()]
     if attendees:
         event['attendees'] = attendees
+
+    config.debug(f"Creating event: {event['summary']} from {event['start']['dateTime']} to {event['end']['dateTime']}")
 
     try:
         event = service.events().insert(calendarId='primary', body=event).execute()

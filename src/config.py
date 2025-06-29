@@ -1,5 +1,9 @@
 import os
 
+def debug(message: str):
+    if os.getenv("DEBUG", "false").lower() == "true":
+        print(f"DEBUG: {message}")
+
 weekday_map = {
     "monday": 0,
     "tuesday": 1,
@@ -30,3 +34,8 @@ latest_tide = int(os.getenv("LATEST_TIDE", 17))
 invite_hour, invite_minute = map(int, os.getenv("INVITE_TIME", "17:00").split(":"))
 if invite_hour < 0 or invite_hour > 23 or invite_minute < 0 or invite_minute > 59:
     raise ValueError("Invalid invite time format. Use HH:MM in 24-hour format.")
+
+debug(f"Configuration: invite_day={invite_day}, api_key={api_key}, "
+      f"location_id={location_id}, attendees={attendees}, forecast_days={forecast_days}, "
+      f"earliest_tide={earliest_tide}, latest_tide={latest_tide}, "
+      f"invite_time={invite_hour}:{invite_minute}")

@@ -4,10 +4,11 @@ from weather import get_tide_forecast, determine_low_tide
 import config
 import time
 
-__version__ = "0.1.1"
+__version__ = "0.1.7"
 
 def invite_time(day: int, hour: int, min: int) -> bool:
     now = datetime.now()
+    config.debug(f"Checking invite time: {now.weekday()} == {day} and {now.hour} == {hour} and {now.minute} == {min}")
     return now.weekday() == day and now.hour == hour and now.minute == min
 
 
@@ -19,6 +20,7 @@ def main():
         return
 
     for day in all_days:
+        config.debug(f"Processing day: {day.get('dateTime')}")
         date_str = day.get("dateTime")
         entries = day.get("entries", [])
         if not entries:
@@ -43,8 +45,17 @@ def main():
 
         create_calendar_event(rounded_dt, start_window_dt, end_window_dt, lowest_entry['height'])
 
+        config.debug(f"Created event for {rounded_dt.strftime('%Y-%m-%d %H:%M')} with height {lowest_entry['height']}")
+
 if __name__ == "__main__":
-    if invite_time(config.invite_day, config.invite_hour, config.invite_minute):
-        main()
-    else:
-        time.sleep(60)
+    print(f"Tide Invite Version: {__version__} starting...", flush=True)
+    while True:
+        if invite_time(config.invite_day, config.invite_hour, config.invite_minute):
+            config.debug("It's the right time to invite. Starting main process.")
+            main()
+            time.sleep(600)
+        else:
+            config.debug("Not the right time to invite. Waiting for next check.")
+            time.sleep(30)
+
+print("Tide Invite process completed. Exiting.", flush=True)

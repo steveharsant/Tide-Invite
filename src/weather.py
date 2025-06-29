@@ -13,6 +13,8 @@ def get_tide_forecast(api_key: str, location_id: str, forecast_days: int) -> lis
     all_days = []
 
     for i in range(forecast_days):
+        config.debug(f"Fetching tide data for day {i + 1} of {forecast_days}")
+
         start_date = (datetime.now().date() + timedelta(days=i)).isoformat()
         headers = {
             "Content-Type": "application/json",
@@ -36,6 +38,8 @@ def get_tide_forecast(api_key: str, location_id: str, forecast_days: int) -> lis
 def determine_low_tide(entries: list):
     day_entries = defaultdict(list)
 
+    config.debug(f"Determining low tide from {len(entries)} entries")
+
     for entry in entries:
         dt = datetime.strptime(entry['dateTime'], "%Y-%m-%d %H:%M:%S")
         if config.earliest_tide <= dt.hour < config.latest_tide:
@@ -43,6 +47,8 @@ def determine_low_tide(entries: list):
             day_entries[day_key].append(entry)
 
     daily_lowest = []
+
+    config.debug(f"Found {len(day_entries)} days with tide entries")
 
     for day, day_list in day_entries.items():
         lowest_entry = min(day_list, key=lambda e: e['height'])
